@@ -15,6 +15,7 @@ body {
 
 .tbase {
   padding-top: calc(30vh * 100 / 900);
+  padding-bottom: calc(30vh * 100 / 900)
 }
 
 .t2base {
@@ -45,4 +46,11 @@ body {
 	grid-auto-flow: row;
 	grid-template-areas:
 	". . . . .";
+}
+
+.sticky {
+	position: fixed;
+	-webkit-backdrop-filter: blur(8px);
+	backdrop-filter: blur(8px);
+	opacity: 0.75;
 }

@@ -1,8 +1,9 @@
 'use client'
 
 import Image from 'next/image'
+
+import { useState, useEffect } from 'react'
 /*
-import { useState } from 'react'
 import {
   createClient,
   createRandomAccount,
@@ -81,17 +82,35 @@ export default function Home() {
   }
 
 */
+useEffect(() => {
+window.onscroll = function() {myFunction()};
+
+// Get the navbar
+var navbar = document.getElementById("navbar");
+
+// Get the offset position of the navbar
+var sticky = navbar.offsetTop;
+
+// Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+  function myFunction() {
+    if (window.pageYOffset > sticky) {
+      navbar.classList.add("sticky")
+    } else {
+      navbar.classList.remove("sticky");
+    }
+  } 
+}, []);
 
   return (
     <main className="text-black">
-      <div className="absolute relative basetext flex items-center tbase">
-        <div className="flex-none lbase">
-          <p className="font-bold">SoveiLive</p>
-        </div>
-        <div className="grow"></div>
-        <div className="flex-none rbase">
-          <button className="bg-[#EAB308] px-8 py-2 rounded-2xl text-white">0x123...789</button>
-        </div>
+      <div id="navbar" className="w-screen bg-yellow-50 top-0 basetext flex items-center tbase">
+          <div className="flex-none lbase">
+            <p className="font-bold">SoveiLive</p>
+          </div>
+          <div className="grow"></div>
+          <div className="flex-none rbase">
+            <button className="bg-[#EAB308] px-8 py-2 rounded-2xl text-white">0x123...789</button>
+          </div>
       </div>
 
       <div className="main-c pt-8">
