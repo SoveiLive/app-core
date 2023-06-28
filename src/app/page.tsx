@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+/*
 import { useState } from 'react'
 import {
   createClient,
@@ -24,9 +25,10 @@ const client = createClient(
 //  "http://127.0.0.1:26619",
 //  "http://127.0.0.1:26639",
   account
-)
+)*/
 
 export default function Home() {
+/*
   const [database, setDatabase] = useState<any>()
   const [collection, setCollection] = useState<any>()
 
@@ -78,23 +80,57 @@ export default function Home() {
     }
   }
 
+*/
+
   return (
     <main className="text-black">
       <div className="absolute relative basetext flex items-center tbase">
-
         <div className="flex-none lbase">
           <p className="font-bold">SoveiLive</p>
         </div>
-
-        <div className="grow">
-          
-        </div>
-
+        <div className="grow"></div>
         <div className="flex-none rbase">
           <button className="bg-[#EAB308] px-8 py-2 rounded-2xl text-white">0x123...789</button>
         </div>
+      </div>
+
+      <div className="main-c pt-8">
+        <div></div>
+        <div></div>
+        <div></div>
+
+        <div>
+          <div className="box-sh p-4 rounded-[14px] ">
+            <p className="font-semibold text-base">Send a message</p>
+            <p className="text-sm text-[425466]">The message will be sent over the entire network.</p>
+            <textarea className="bg-[#EDF2F7] w-full rounded-[10px] h-16 resize-none mt-2"></textarea>
+            <div className="mt-2 flex flex-row-reverse">
+              <button className="bg-[#EAB308] px-4 py-2 text-xs rounded-md rounded-2xl text-white">Send</button>
+            </div>
+          </div>
+
+          <div className="box-sh mt-4 rounded-[14px] px-1 pt-1">
+            <div className="w-full h-40 relative">
+              <Image src="/image/cover.png" fill={true} alt="oui" />
+            </div>
+            <div className="p-6">
+              <p className="font-semibold text-base">Title</p>
+              <p className="text-[#425466] text-sm mt-2">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt.</p>
+            </div>
+          </div>
+
+          <div className="box-sh mt-4 rounded-[14px] px-1 pt-1">
+            <div className="p-6">
+              <p className="font-semibold text-base">Title</p>
+              <p className="text-[#425466] text-sm mt-2">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt.</p>
+            </div>
+          </div>
+        </div>
+
+        <div></div>
 
       </div>
+      
       <button onClick={() => get()}>Get</button>
     </main>
   )
