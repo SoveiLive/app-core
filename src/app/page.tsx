@@ -3,16 +3,12 @@
 import Image from 'next/image'
 import { useState } from 'react'
 import {
-  initializeDB3,
   createClient,
   createRandomAccount,
   addDoc,
   syncAccountNonce,
-  getDocs,
   Index,
   getCollection,
-  DocumentReference,
-  EventMessage,
   deleteDoc,
   getDatabase,
   IndexType,
@@ -31,8 +27,8 @@ const client = createClient(
 )
 
 export default function Home() {
-  const [database, setDatabase] = useState()
-  const [collection, setCollection] = useState()
+  const [database, setDatabase] = useState<any>()
+  const [collection, setCollection] = useState<any>()
 
   async function get() {
     await syncAccountNonce(client)
