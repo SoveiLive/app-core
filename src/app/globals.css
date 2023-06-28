@@ -7,3 +7,28 @@
 
 body {
 }
+
+
+.basetext {
+  font-size: calc(16vw * 100 / 1440);
+}
+
+.tbase {
+  padding-top: calc(30vh * 100 / 900);
+}
+
+.t2base {
+  top: calc(30vh * 100 / 900);
+}
+
+.lbase {
+  margin-left: calc(56vw * 100 / 1440);
+}
+
+.rbase {
+  margin-right: calc(56vw * 100 / 1440);
+}
+
+.wbase {
+  width: calc(568vw * 100 / 1440);
+}

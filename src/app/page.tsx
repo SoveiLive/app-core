@@ -79,7 +79,22 @@ export default function Home() {
   }
 
   return (
-    <main className="">
+    <main className="text-black">
+      <div className="absolute relative basetext flex items-center tbase">
+
+        <div className="flex-none lbase">
+          <p className="font-bold">SoveiLive</p>
+        </div>
+
+        <div className="grow">
+          
+        </div>
+
+        <div className="flex-none rbase">
+          <button className="bg-[#EAB308] px-8 py-2 rounded-2xl text-white">0x123...789</button>
+        </div>
+
+      </div>
       <button onClick={() => get()}>Get</button>
     </main>
   )
