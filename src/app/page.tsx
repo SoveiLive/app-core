@@ -80,28 +80,6 @@ export default function Home() {
     }
   }
 
-
-const [navbar, setNavbar] = useState<any>()
-
-useEffect(() => {
-  window.onscroll = function() {changeNavbar()};
-
-  const navbar = document.getElementById("navbar");
-
-  if(navbar) {
-    setNavbar(navbar)
-  }
-  function changeNavbar() {
-    if(navbar) {
-      if (window.pageYOffset > navbar.offsetTop) {
-        navbar.classList.add("sticky")
-      } else {
-        navbar.classList.remove("sticky");
-      }
-    }
-  } 
-}, []);
-
   return (
     <main className="text-black">
       <div id="navbar" className="w-screen bg-yellow-50 top-0 basetext flex items-center tbase">

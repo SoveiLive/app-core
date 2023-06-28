@@ -48,8 +48,8 @@ body {
 	". . . . .";
 }
 
-.sticky {
-	position: fixed;
+#navbar {
+	position: sticky;
 	-webkit-backdrop-filter: blur(8px);
 	backdrop-filter: blur(8px);
 	opacity: 0.75;
