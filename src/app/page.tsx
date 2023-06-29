@@ -15,7 +15,8 @@ import {
   getDatabase,
   IndexType,
   createCollection,
-  createFromPrivateKey
+  createFromPrivateKey,
+  queryDoc
 } from 'db3.js'
 
 const account = createRandomAccount()
@@ -28,25 +29,14 @@ const client = createClient(
   account
 )
 
+interface Post {
+  content: string;
+}
+
 export default function Home() {
   const [database, setDatabase] = useState<any>()
   const [collection, setCollection] = useState<any>()
-
-  async function get() {
-    await syncAccountNonce(client)
-    const col = await getCollection(
-      "0xd2d84d491caa901010fc28dd99502503027e5ea5",
-      "o",
-//      "0x9f1a0159cb55bd342f52d8c680050e5efec23977",
-//      "ent",
-    client)
-    console.log(col)
-    setCollection(col)
-    
-//    const db = await getDatabase("0xd2d84d491caa901010fc28dd99502503027e5ea5", client)
-//    setDatabase(db)
-//    console.log(db)
-  }
+  const [posts, setPosts] = useState<Post[]>([])
 
   async function add() {
     try {
@@ -80,6 +70,23 @@ export default function Home() {
     }
   }
 
+  async function getData() {
+    const queryStr = '/post | limit 10'
+    const resultSet: Post<array> = (await queryDoc<Post>(collection, queryStr)).docs
+    console.log(resultSet)
+    setPosts(resultSet)
+  }
+
+  useEffect(() => {
+    async function get_() {
+      await syncAccountNonce(client)
+      const col = await getCollection("0x38801fd445898d1851dcf8ed5504840a98434800", "o", client)
+      console.log(col)
+      setCollection(col)
+    }
+    get_()
+  }, [])
+
   return (
     <main className="text-black">
       <div id="navbar" className="w-screen bg-yellow-50 top-0 basetext flex items-center tbase">
@@ -107,6 +114,15 @@ export default function Home() {
             </div>
           </div>
 
+          {posts.map((item) => (
+            <div key={item.id} className="box-sh mt-4 rounded-[14px] px-1 pt-1">
+              <div className="p-6">
+                <p className="font-semibold text-base">Title</p>
+                <p className="text-[#425466] text-sm mt-2">{item.doc.post}</p>
+              </div>
+            </div>
+          ))}
+
           <div className="box-sh mt-4 rounded-[14px] px-1 pt-1">
             <div className="w-full h-40 relative">
               <Image src="/image/cover.png" fill={true} alt="oui" />
@@ -117,12 +133,6 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="box-sh mt-4 rounded-[14px] px-1 pt-1">
-            <div className="p-6">
-              <p className="font-semibold text-base">Title</p>
-              <p className="text-[#425466] text-sm mt-2">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt.</p>
-            </div>
-          </div>
         </div>
 
         <div></div>
@@ -130,6 +140,7 @@ export default function Home() {
       </div>
       
       <button onClick={() => get()}>Get</button>
+      <button onClick={() => getData()}>Data</button>
     </main>
   )
 }
