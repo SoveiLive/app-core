@@ -40,17 +40,20 @@ export default function Home() {
 
   async function add() {
     try {
-      console.log(collection)
+      const value = document.querySelector('#messageform').value
       const x = await addDoc(collection, {
-        name: 'book3',
-        author: 'db3 developers',
-        tag: 'web3',
-        time: 1686285013,
+        post: value,
       })
-      console.log(x) 
+      getData()
     } catch(e) {
       console.log(e)
     }
+  }
+
+  function later(delay) {
+    return new Promise(function(resolve) {
+        setTimeout(resolve, delay)
+    })
   }
 
   async function create() {
@@ -79,10 +82,15 @@ export default function Home() {
 
   useEffect(() => {
     async function get_() {
+      // get collection
       await syncAccountNonce(client)
       const col = await getCollection("0x38801fd445898d1851dcf8ed5504840a98434800", "o", client)
-      console.log(col)
       setCollection(col)
+
+      // get posts
+      const queryStr = '/post | limit 10'
+      const resultSet: Post<array> = (await queryDoc<Post>(col, queryStr)).docs
+      setPosts(resultSet)
     }
     get_()
   }, [])
@@ -108,9 +116,9 @@ export default function Home() {
           <div className="box-sh p-4 rounded-[14px] ">
             <p className="font-semibold text-base">Send a message</p>
             <p className="text-sm text-[425466]">The message will be sent over the entire network.</p>
-            <textarea className="bg-[#EDF2F7] w-full rounded-[10px] h-16 resize-none mt-2"></textarea>
+            <textarea id="messageform" className="p-2 bg-[#EDF2F7] w-full rounded-[10px] h-16 resize-none mt-2"></textarea>
             <div className="mt-2 flex flex-row-reverse">
-              <button className="bg-[#EAB308] px-4 py-2 text-xs rounded-md rounded-2xl text-white">Send</button>
+              <button onClick={() => add()} className="bg-[#EAB308] px-4 py-2 text-xs rounded-md rounded-2xl text-white">Send</button>
             </div>
           </div>
 
@@ -139,7 +147,7 @@ export default function Home() {
 
       </div>
       
-      <button onClick={() => get()}>Get</button>
+      <button onClick={() => add()}>Add</button>
       <button onClick={() => getData()}>Data</button>
     </main>
   )
