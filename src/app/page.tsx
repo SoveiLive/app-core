@@ -30,17 +30,17 @@ const client = createClient(
 )
 
 interface Post {
-  content: string;
+  post: string;
 }
 
 export default function Home() {
   const [database, setDatabase] = useState<any>()
   const [collection, setCollection] = useState<any>()
-  const [posts, setPosts] = useState<Post[]>([])
+  const [posts, setPosts] = useState<any[]>([])
 
   async function add() {
     try {
-      const value = document.querySelector('#messageform').value
+      const value = (document!.querySelector('#messageform') as HTMLInputElement)!.value
       const x = await addDoc(collection, {
         post: value,
       })
@@ -48,12 +48,6 @@ export default function Home() {
     } catch(e) {
       console.log(e)
     }
-  }
-
-  function later(delay) {
-    return new Promise(function(resolve) {
-        setTimeout(resolve, delay)
-    })
   }
 
   async function create() {
@@ -75,7 +69,7 @@ export default function Home() {
 
   async function getData() {
     const queryStr = '/post | limit 10'
-    const resultSet: Post<array> = (await queryDoc<Post>(collection, queryStr)).docs
+    const resultSet = (await queryDoc<Post>(collection, queryStr)).docs
     console.log(resultSet)
     setPosts(resultSet)
   }
@@ -89,7 +83,7 @@ export default function Home() {
 
       // get posts
       const queryStr = '/post | limit 10'
-      const resultSet: Post<array> = (await queryDoc<Post>(col, queryStr)).docs
+      const resultSet = (await queryDoc<Post>(col, queryStr)).docs
       setPosts(resultSet)
     }
     get_()
