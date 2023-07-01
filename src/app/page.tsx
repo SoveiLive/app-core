@@ -19,6 +19,8 @@ import {
 
 import {  recoverPersonalSignature} from '@metamask/eth-sig-util';
 import { MetaMaskInpageProvider } from '@metamask/providers';
+import ReactMarkdown from 'react-markdown'
+import ReactDom from 'react-dom'
 
 const account = createRandomAccount()
 
@@ -163,8 +165,9 @@ export default function HomePage() {
           {posts.map((item) => (
             <div key={item.id} className="px-1 pt-1 border-b hover:bg-gray-50">
               <div className="p-6">
-                <p className="font-semibold text-base">Title</p>
-                <p className="text-sm mt-2">{item.content}</p>
+		<article class="prose prose-slate">
+		  <ReactMarkdown>{ item.content }</ReactMarkdown>
+		</article>
 		<div className="pt-2">
 		  <p className="text-sm font-extralight">{item.author}</p>
 		</div>
