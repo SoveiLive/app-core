@@ -134,46 +134,48 @@ export default function HomePage() {
   }, [])
 
   return (
-    <main className="text-white">
+    <main className="text-black">
       <div className="main-c h-screen">
-        <div className="bg-[#2660A4] px-8">
+        <div className="bg-[#fafafa] px-8">
           <div className="flex-none tbase">
             <p className="font-bold">SoveiLive</p>
           </div>
-	  <div className="">
+	  <div className="box-sh p-4 rounded-lg">
             <p className="font-semibold">Tags</p>
             <ul>
-               <li><button className="bg-[#2B6CB6] text-white mt-4 w-full py-4 rounded-lg">Yes</button></li>
-               <li><button className="bg-[#2B6CB6] mt-4 w-full py-4 rounded-lg">No</button></li> 	
+               <li className="mt-2 underline"><a href="/tags/programming">/Programming</a></li>
+               <li className="mt-2 underline"><a href="/tags/blockchain">/Blockchain</a></li> 	
             </ul>
           </div>
         </div>
 
-        <div className="px-8 bg-[#2B6CB6] tbase overflow-y-scroll scroll-color">
-          <div className="box-sh p-4 rounded-[14px]">
+        <div className="px-8 bg-[#fafafa] tbase">
+          <div className="box-sh p-4 rounded-lg mb-4">
             <p className="font-semibold text-base">Send a message</p>
             <p className="text-sm text-[425466]">The message will be sent over the entire network.</p>
-            <textarea id="messageform" className="p-2 bg-[#3980D0] w-full rounded-[10px] h-16 resize-none mt-2"></textarea>
+            <textarea id="messageform" className="p-2 bg-gray-100 w-full rounded-[10px] h-16 resize-none mt-2"></textarea>
             <div className="mt-2 flex flex-row-reverse">
               <button onClick={() => add()} className="bg-[#EAB308] px-4 py-2 text-xs rounded-md rounded-2xl text-white">Send</button>
             </div>
           </div>
 
+	  <div className="rounded-lg box-sh overflow-none">
           {posts.map((item) => (
-            <div key={item.id} className="box-sh mt-4 rounded-[14px] px-1 pt-1">
+            <div key={item.id} className="px-1 pt-1 border-b hover:bg-gray-50">
               <div className="p-6">
                 <p className="font-semibold text-base">Title</p>
-                <p className="text-white text-sm mt-2">{item.content}</p>
+                <p className="text-sm mt-2">{item.content}</p>
 		<div className="pt-2">
-		  <p className="text-white ttext-sm font-extralight">{item.author}</p>
+		  <p className="text-sm font-extralight">{item.author}</p>
 		</div>
               </div>
             </div>
           ))}
+	 </div>
 
         </div>
 
-        <div className="bg-[#2660A4] px-8">
+        <div className="bg-[#fafafa] px-8">
           <div className="flex-none float-right tbase">
             <Connect />
           </div>
