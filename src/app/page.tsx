@@ -134,27 +134,26 @@ export default function HomePage() {
   }, [])
 
   return (
-    <main className="text-black">
-      <div id="navbar" className="w-screen bg-yellow-50 top-0 basetext flex items-center tbase">
-          <div className="flex-none lbase">
+    <main className="text-white">
+      <div className="main-c h-screen">
+        <div className="bg-[#2660A4] px-8">
+          <div className="flex-none tbase">
             <p className="font-bold">SoveiLive</p>
           </div>
-          <div className="grow"></div>
-          <div className="flex-none rbase">
-            <Connect />
+	  <div className="">
+            <p className="font-semibold">Tags</p>
+            <ul>
+               <li><button className="bg-[#2B6CB6] text-white mt-4 w-full py-4 rounded-lg">Yes</button></li>
+               <li><button className="bg-[#2B6CB6] mt-4 w-full py-4 rounded-lg">No</button></li> 	
+            </ul>
           </div>
-      </div>
+        </div>
 
-      <div className="main-c pt-8">
-        <div></div>
-        <div></div>
-        <div></div>
-
-        <div>
-          <div className="box-sh p-4 rounded-[14px] ">
+        <div className="px-8 bg-[#2B6CB6] tbase overflow-y-scroll scroll-color">
+          <div className="box-sh p-4 rounded-[14px]">
             <p className="font-semibold text-base">Send a message</p>
             <p className="text-sm text-[425466]">The message will be sent over the entire network.</p>
-            <textarea id="messageform" className="p-2 bg-[#EDF2F7] w-full rounded-[10px] h-16 resize-none mt-2"></textarea>
+            <textarea id="messageform" className="p-2 bg-[#3980D0] w-full rounded-[10px] h-16 resize-none mt-2"></textarea>
             <div className="mt-2 flex flex-row-reverse">
               <button onClick={() => add()} className="bg-[#EAB308] px-4 py-2 text-xs rounded-md rounded-2xl text-white">Send</button>
             </div>
@@ -164,26 +163,21 @@ export default function HomePage() {
             <div key={item.id} className="box-sh mt-4 rounded-[14px] px-1 pt-1">
               <div className="p-6">
                 <p className="font-semibold text-base">Title</p>
-                <p className="text-[#425466] text-sm mt-2">{item.content}</p>
+                <p className="text-white text-sm mt-2">{item.content}</p>
 		<div className="pt-2">
-		  <p className="text-[#425466] ttext-sm font-extralight">{item.author}</p>
+		  <p className="text-white ttext-sm font-extralight">{item.author}</p>
 		</div>
               </div>
             </div>
           ))}
 
-          <div className="box-sh mt-4 rounded-[14px] px-1 pt-1">
-            <div className="w-full h-40 relative">
-              <Image src="/image/cover.png" fill={true} alt="oui" />
-            </div>
-            <div className="p-6">
-              <p className="font-semibold text-base">Title</p>
-              <p className="text-[#425466] text-sm mt-2">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt.</p>
-            </div>
-          </div>
         </div>
 
-        <div></div>
+        <div className="bg-[#2660A4] px-8">
+          <div className="flex-none float-right tbase">
+            <Connect />
+          </div>
+        </div>
       </div>
     </main>
   )

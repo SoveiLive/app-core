@@ -19,15 +19,11 @@ body {
 }
 
 .t2base {
-  top: calc(30vh * 100 / 900);
+  padding-top: calc(43vh * 100 / 900);
 }
 
 .lbase {
   margin-left: calc(56vw * 100 / 1440);
-}
-
-.rbase {
-  margin-right: calc(56vw * 100 / 1440);
 }
 
 .wbase {
@@ -35,12 +31,13 @@ body {
 }
 
 .box-sh {
+	background: #2F75C6;
 	box-shadow: 0px 1px 3px 0px rgba(50, 50, 71, 0.10), 0px 0px 1px 0px rgba(12, 26, 75, 0.20);
 }
 
 .main-c {
 	display: grid;
-	grid-template-columns: 3fr 3fr 1fr 6fr 3fr;
+	grid-template-columns: 3fr 6fr 3fr;
 	grid-template-rows: 1fr;
 	gap: 0px 0px;
 	grid-auto-flow: row;
@@ -53,4 +50,8 @@ body {
 	-webkit-backdrop-filter: blur(8px);
 	backdrop-filter: blur(8px);
 	opacity: 0.75;
+}
+
+.scroll-color {
+  scrollbar-color: #183d68 #225591;
 }
