@@ -140,17 +140,17 @@ export default function HomePage() {
           <div className="flex-none tbase">
             <p className="font-bold">SoveiLive</p>
           </div>
-	  <div className="box-sh p-4 rounded-lg">
+	  <div className="box-sh p-8 rounded-2xl">
             <p className="font-semibold">Tags</p>
             <ul>
                <li className="mt-2 underline"><a href="/tags/programming">/Programming</a></li>
-               <li className="mt-2 underline"><a href="/tags/blockchain">/Blockchain</a></li> 	
+               <li className="my-2 underline"><a href="/tags/blockchain">/Blockchain</a></li> 	
             </ul>
           </div>
         </div>
 
         <div className="px-8 bg-[#fafafa] tbase">
-          <div className="box-sh p-4 rounded-lg mb-4">
+          <div className="box-sh p-4 rounded-2xl mb-4">
             <p className="font-semibold text-base">Send a message</p>
             <p className="text-sm text-[425466]">The message will be sent over the entire network.</p>
             <textarea id="messageform" className="p-2 bg-gray-100 w-full rounded-[10px] h-16 resize-none mt-2"></textarea>
@@ -159,7 +159,7 @@ export default function HomePage() {
             </div>
           </div>
 
-	  <div className="rounded-lg box-sh overflow-none">
+	  <div className="rounded-2xl box-sh overflow-none">
           {posts.map((item) => (
             <div key={item.id} className="px-1 pt-1 border-b hover:bg-gray-50">
               <div className="p-6">
