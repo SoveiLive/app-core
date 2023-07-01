@@ -8,6 +8,8 @@ export const metadata = {
   description: 'The social network where you really control your data, thanks to web3.',
 }
 
+import Page from './app'
+
 export default function RootLayout({
   children,
 }: {
@@ -15,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}><Page>{children}</Page></body>
     </html>
   )
 }

@@ -1,9 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-
 import { useState, useEffect } from 'react'
-
 import {
   createClient,
   createRandomAccount,
@@ -19,6 +17,9 @@ import {
   queryDoc
 } from 'db3.js'
 
+import {  recoverPersonalSignature} from '@metamask/eth-sig-util';
+import { MetaMaskInpageProvider } from '@metamask/providers';
+
 const account = createRandomAccount()
 
 const client = createClient(
@@ -29,20 +30,37 @@ const client = createClient(
   account
 )
 
+import Connect from './components/Connect'
+
 interface Post {
-  post: string;
+  content: string;
+  signaturee: string;
 }
 
-export default function Home() {
+declare global {
+  interface Window{
+    ethereum?:MetaMaskInpageProvider
+  }
+}
+
+export default function HomePage() {
   const [database, setDatabase] = useState<any>()
   const [collection, setCollection] = useState<any>()
   const [posts, setPosts] = useState<any[]>([])
+  const [ethereum, setEthereum] = useState<any>()
 
   async function add() {
     try {
-      const value = (document!.querySelector('#messageform') as HTMLInputElement)!.value
+      const message = (document!.querySelector('#messageform') as HTMLInputElement)!.value
+
+      const accounts: any = await ethereum?.request({ method: 'eth_requestAccounts' })
+      const account: any = accounts?accounts[0]:undefined
+
+      const signature = await ethereum?.request({ method: 'personal_sign', params: [ message, account ] })
+
       const x = await addDoc(collection, {
-        post: value,
+        content: message,
+	signature: signature
       })
       getData()
     } catch(e) {
@@ -68,10 +86,24 @@ export default function Home() {
   }
 
   async function getData() {
-    const queryStr = '/post | limit 10'
-    const resultSet = (await queryDoc<Post>(collection, queryStr)).docs
-    console.log(resultSet)
-    setPosts(resultSet)
+      const queryStr = '/content and /signature | limit 10'
+      const resultSet = (await queryDoc<Post>(collection, queryStr)).docs.map(
+        element => {
+	  return {
+	    id: element.id,
+	    content: (element.doc as any).content,
+	    author: getAuthor((element.doc as any).content, (element.doc as any).signature)
+          }
+	}
+      )
+      setPosts(resultSet)
+ }
+
+  async function getAuthor(message: string, signature: string) {
+    return await recoverPersonalSignature({
+        data: message, 
+        signature: signature 
+    })
   }
 
   useEffect(() => {
@@ -82,11 +114,23 @@ export default function Home() {
       setCollection(col)
 
       // get posts
-      const queryStr = '/post | limit 10'
-      const resultSet = (await queryDoc<Post>(col, queryStr)).docs
+      const queryStr = '/content and /signature | limit 10'
+      const resultSet = (await queryDoc<Post>(col, queryStr)).docs.map(
+        element => {
+	  return {
+	    id: element.id,
+	    content: (element.doc as any).content,
+	    author: getAuthor((element.doc as any).content, (element.doc as any).signature)
+          }
+	}
+      )
       setPosts(resultSet)
+      console.log(resultSet)
     }
     get_()
+    if (typeof window !== "undefined") {
+      setEthereum(window.ethereum)
+    }
   }, [])
 
   return (
@@ -97,7 +141,7 @@ export default function Home() {
           </div>
           <div className="grow"></div>
           <div className="flex-none rbase">
-            <button className="bg-[#EAB308] px-8 py-2 rounded-2xl text-white">0x123...789</button>
+            <Connect />
           </div>
       </div>
 
@@ -120,7 +164,10 @@ export default function Home() {
             <div key={item.id} className="box-sh mt-4 rounded-[14px] px-1 pt-1">
               <div className="p-6">
                 <p className="font-semibold text-base">Title</p>
-                <p className="text-[#425466] text-sm mt-2">{item.doc.post}</p>
+                <p className="text-[#425466] text-sm mt-2">{item.content}</p>
+		<div className="pt-2">
+		  <p className="text-[#425466] ttext-sm font-extralight">{item.author}</p>
+		</div>
               </div>
             </div>
           ))}
@@ -134,15 +181,10 @@ export default function Home() {
               <p className="text-[#425466] text-sm mt-2">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt.</p>
             </div>
           </div>
-
         </div>
 
         <div></div>
-
       </div>
-      
-      <button onClick={() => add()}>Add</button>
-      <button onClick={() => getData()}>Data</button>
     </main>
   )
 }
