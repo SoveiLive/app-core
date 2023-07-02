@@ -54,7 +54,7 @@ export default function HomePage() {
   const params = useParams()
 
  async function getData() {
-    const queryStr = "/content and /signature and /[tag = " + params.slut + "] | limit 10";
+    const queryStr = "/content and /signature and /[tag = " + params.slug + "] | limit 10";
     const resultSet = (await queryDoc<Post>(collection, queryStr)).docs.map(
       (element) => {
         return {
@@ -89,7 +89,7 @@ export default function HomePage() {
       setCollection(col);
 
       // get posts
-      const queryStr = "/content and /signature and /[tag = " + params.slut + "] | limit 10";
+      const queryStr = "/content and /signature and /[tag = " + params.slug + "] | limit 10";
       const resultSet = (await queryDoc<Post>(col, queryStr)).docs.map(
         (element) => {
           return {
@@ -109,7 +109,7 @@ export default function HomePage() {
     if (typeof window !== "undefined") {
       setEthereum(window.ethereum);
     }
-  }, []);
+  }, [params.slug]);
 
   return (
     <main className="text-black">

@@ -46,9 +46,7 @@ declare global {
   }
 }
 
-export default function HomePage({
-  params: { slug: string }
-}) {
+export default function HomePage() {
   const [database, setDatabase] = useState<any>();
   const [collection, setCollection] = useState<any>();
   const [ethereum, setEthereum] = useState<any>();
@@ -69,7 +67,7 @@ export default function HomePage({
     if (typeof window !== "undefined") {
       setEthereum(window.ethereum);
     }
-  }, []);
+  }, [params.slug]);
 
   return (
     <main className="text-black">
@@ -94,7 +92,7 @@ export default function HomePage({
             </div>
 	    <div className="p-4 pt-16">
               <p className="font-semibold text-xl">John Doe</p>
-              <p className="font-light my-1">"When one wants to be famous, one has to dive gracefully into rivers of the blood of cannon-blasted bodies."</p>
+              <p className="font-light my-1">&#34;When one wants to be famous, one has to dive gracefully into rivers of the blood of cannon-blasted bodies.&#34;</p>
               <p>{params.slug.substring(0, 5) + "..." + params.slug.substring(params.slug.length - 3, params.slug.length)} | View on <a className="text-blue-500" href={"https://etherscan.io/address/"+params.slug} target="blank_">EtherScan</a></p>
             </div>
           </div>
