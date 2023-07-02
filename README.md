@@ -1,5 +1,5 @@
 <div align="center">
-	<a href="https://vshymanskyy.github.io/StandWithUkraine">
+	<a href="https://sovei.live">
 		<img width="300" height="300" src="public/cover.png" alt="Awesome">
 	</a>
 
