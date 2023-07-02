@@ -115,8 +115,8 @@ export default function HomePage() {
     setPosts(resultSet);
   }
 
-  async function getAuthor(message: string, signature: string) {
-    return await recoverPersonalSignature({
+  function getAuthor(message: string, signature: string) {
+    return recoverPersonalSignature({
       data: message,
       signature: signature,
     });
@@ -207,7 +207,7 @@ export default function HomePage() {
                     <ReactMarkdown>{item.content}</ReactMarkdown>
                   </article>
                   <div className="pt-2">
-                    <p className="text-sm font-extralight">{item.author}</p>
+                    <p className="text-sm font-extralight"><a href={"/u/"+item.author}>{item.author.substring(0, 5) + "..." + item.author.substring(item.author.length - 3, item.author.length)}</a></p>
                   </div>
                 </div>
               </div>
