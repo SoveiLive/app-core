@@ -122,10 +122,10 @@ export default function HomePage() {
             <p className="font-semibold">Tags</p>
             <ul>
               <li className="mt-2 underline">
-                <a href="/tags/programming">/Programming</a>
+                <a href="/tag/programming">/Programming</a>
               </li>
               <li className="my-2 underline">
-                <a href="/tags/blockchain">/Blockchain</a>
+                <a href="/tag/blockchain">/Blockchain</a>
               </li>
             </ul>
           </div>
