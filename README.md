@@ -1,6 +1,6 @@
 # SoveiLive
 
-![Netlify](https://img.shields.io/netlify/edb1f454-a569-4f53-bde8-c009f4ee2560)
+![Netlify](https://img.shields.io/netlify/edb1f454-a569-4f53-bde8-c009f4ee2560?style=flat-square)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
 SoveiLive is a social network where users have data ownership. This repository is dedicated to the core app.
