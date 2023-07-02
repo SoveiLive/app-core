@@ -8,14 +8,13 @@
 body {
 }
 
-
 .basetext {
   font-size: calc(16vw * 100 / 1440);
 }
 
 .tbase {
   padding-top: calc(30vh * 100 / 900);
-  padding-bottom: calc(30vh * 100 / 900)
+  padding-bottom: calc(30vh * 100 / 900);
 }
 
 .t2base {
@@ -31,25 +30,25 @@ body {
 }
 
 .box-sh {
-	background: white; 
-	box-shadow: 0px 1px 3px 0px rgba(50, 50, 71, 0.10), 0px 0px 1px 0px rgba(12, 26, 75, 0.20);
+  background: white;
+  box-shadow: 0px 1px 3px 0px rgba(50, 50, 71, 0.1),
+    0px 0px 1px 0px rgba(12, 26, 75, 0.2);
 }
 
 .main-c {
-	display: grid;
-	grid-template-columns: 3fr 6fr 3fr;
-	grid-template-rows: 1fr;
-	gap: 0px 0px;
-	grid-auto-flow: row;
-	grid-template-areas:
-	". . . . .";
+  display: grid;
+  grid-template-columns: 3fr 6fr 3fr;
+  grid-template-rows: 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas: ". . . . .";
 }
 
 #navbar {
-	position: sticky;
-	-webkit-backdrop-filter: blur(8px);
-	backdrop-filter: blur(8px);
-	opacity: 0.75;
+  position: sticky;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  opacity: 0.75;
 }
 
 .scroll-color {
