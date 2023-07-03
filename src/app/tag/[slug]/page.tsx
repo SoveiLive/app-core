@@ -22,6 +22,7 @@ import { recoverPersonalSignature } from "@metamask/eth-sig-util";
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import ReactMarkdown from "react-markdown";
 import ReactDom from "react-dom";
+import Link from 'next/link'
 
 const account = createRandomAccount();
 
@@ -116,16 +117,16 @@ export default function HomePage() {
       <div className="main-c h-screen">
         <div className="bg-[#fafafa] px-8">
           <div className="flex-none tbase">
-            <p className="font-bold">SoveiLive</p>
+            <p className="font-bold"><Link href="/">SoveiLive</Link></p>
           </div>
           <div className="box-sh p-8 rounded-2xl">
             <p className="font-semibold">Tags</p>
             <ul>
               <li className="mt-2 underline">
-                <a href="/tag/programming">/Programming</a>
+                <Link href="/tag/programming">/Programming</Link>
               </li>
               <li className="my-2 underline">
-                <a href="/tag/blockchain">/Blockchain</a>
+                <Link href="/tag/blockchain">/Blockchain</Link>
               </li>
             </ul>
           </div>
@@ -143,7 +144,7 @@ export default function HomePage() {
                     <ReactMarkdown>{item.content}</ReactMarkdown>
                   </article>
                   <div className="pt-2">
-                    <p className="text-sm font-extralight"><a href={"/u/"+item.author}>{item.author.substring(0, 5) + "..." + item.author.substring(item.author.length - 3, item.author.length)}</a></p>
+                    <p className="text-sm font-extralight underline"><Link href={"/u/"+item.author}>{item.author.substring(0, 5) + "..." + item.author.substring(item.author.length - 3, item.author.length)}</Link></p>
                   </div>
                 </div>
               </div>

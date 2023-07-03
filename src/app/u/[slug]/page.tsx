@@ -22,6 +22,7 @@ import { recoverPersonalSignature } from "@metamask/eth-sig-util";
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import ReactMarkdown from "react-markdown";
 import ReactDom from "react-dom";
+import Link from 'next/link'
 
 const account = createRandomAccount();
 
@@ -74,7 +75,7 @@ export default function HomePage() {
       <div className="main-c h-screen">
         <div className="bg-[#fafafa] px-8">
           <div className="flex-none tbase">
-            <p className="font-bold">SoveiLive</p>
+            <p className="font-bold"><Link href="/">SoveiLive</Link></p>
           </div>
         </div>
 
