@@ -1,12 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
-import Web3 from "web3";
 import "@rainbow-me/rainbowkit/styles.css";
 import { connectorsForWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import { mainnet, polygon, optimism, arbitrum, zora } from "wagmi/chains";
-import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
 import { injectedWallet } from '@rainbow-me/rainbowkit/wallets'
 
