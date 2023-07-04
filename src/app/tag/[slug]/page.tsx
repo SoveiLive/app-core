@@ -22,18 +22,19 @@ import { MetaMaskInpageProvider } from "@metamask/providers";
 import ReactMarkdown from "react-markdown";
 import ReactDom from "react-dom";
 import Link from 'next/link'
+import Connect from "../../components/Connect";
+
+// get variables
+const {publicRuntimeConfig} = require('../../../../next.config.js')
+const {DATABASE, ROLLUP_NODE, INDEX_NODE} = publicRuntimeConfig
 
 const account = createRandomAccount()
 
 const client = createClient(
-  "https://rollup.cloud.db3.network",
-  "https://index.cloud.db3.network",
-  //"http://127.0.0.1:26619",
-  //"http://127.0.0.1:26639",
+  ROLLUP_NODE,
+  INDEX_NODE,
   account
 )
-
-import Connect from "../../components/Connect";
 
 interface Post {
   content: string;
@@ -49,10 +50,6 @@ declare global {
     ethereum?: MetaMaskInpageProvider;
   }
 }
-
-// get DATABASE variable
-const {publicRuntimeConfig} = require('../../../../next.config.js')
-const {DATABASE} = publicRuntimeConfig
 
 export default function HomePage() {
   const [database, setDatabase] = useState<any>();
