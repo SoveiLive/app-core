@@ -3,22 +3,56 @@
 import { useEffect } from "react";
 import Web3 from "web3";
 import "@rainbow-me/rainbowkit/styles.css";
-import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import { connectorsForWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { mainnet, polygon, optimism, arbitrum, zora } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
+import { injectedWallet } from '@rainbow-me/rainbowkit/wallets'
+
+const customeMumbai = {
+  id: 80001,
+  name: 'local Testnet',
+  network: 'local-testnet',
+  nativeCurrency: { name: 'matic', symbol: 'matic', decimals: 18 },
+  rpcUrls: {
+    default: {
+      http: [
+        'https://polygon-mumbai.g.alchemy.com/v2/KIUID-hlFzpnLetzQdVwO38IQn0giefR',
+      ],
+      webSocket: [
+        'wss://polygon-mumbai.g.alchemy.com/v2/KIUID-hlFzpnLetzQdVwO38IQn0giefR',
+      ],
+    },
+    public: {
+      http: [
+      'https://polygon-mumbai.g.alchemy.com/v2/KIUID-hlFzpnLetzQdVwO38IQn0giefR',
+      ],
+      webSocket: [
+        'wss://polygon-mumbai.g.alchemy.com/v2/KIUID-hlFzpnLetzQdVwO38IQn0giefR',
+      ],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'localhost',
+      url: 'https://mumbai.polygonscan.com/',
+    },
+  },
+  testnet: true,
+}
 
 const { chains, publicClient } = configureChains(
-  [mainnet, polygon, optimism, arbitrum, zora],
+  [customeMumbai],
   [publicProvider()]
-);
+)
 
-const { connectors } = getDefaultWallets({
-  appName: "soveilive",
-  projectId: "f313fb2b18faad5aecf96a210ba0bb0b",
-  chains,
-});
+const connectors = connectorsForWallets([
+  {
+    groupName: 'Recommended',
+    wallets: [injectedWallet({ chains })],
+  },
+])
 
 const wagmiConfig = createConfig({
   autoConnect: true,
