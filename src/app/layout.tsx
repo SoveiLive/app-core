@@ -4,9 +4,9 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "SoveiLive - The social network",
+  title: "SoveiLive - The social media",
   description:
-    "The social network where you really control your data, thanks to web3.",
+    "The social media where you really control your data, thanks to web3.",
 };
 
 import Page from "./app";
