@@ -8,13 +8,8 @@ import {
   createRandomAccount,
   addDoc,
   syncAccountNonce,
-  Index,
   getCollection,
-  deleteDoc,
-  getDatabase,
-  IndexType,
   createCollection,
-  createFromPrivateKey,
   queryDoc,
 } from "db3.js";
 import { recoverPersonalSignature } from "@metamask/eth-sig-util";
@@ -52,7 +47,6 @@ declare global {
 }
 
 export default function HomePage() {
-  const [database, setDatabase] = useState<any>();
   const [collection, setCollection] = useState<any>();
   const [posts, setPosts] = useState<any[]>([]);
   const [ethereum, setEthereum] = useState<any>();
@@ -61,12 +55,12 @@ export default function HomePage() {
 
  async function getData() {
     const temp: any = {}
+
     async function addLike(id: string) {
       try {
         // didn't get count works atm
         const queryByNameAndCount = '/["like" = "' + id + '"] | limit 100'
         const likes = await queryDoc<Like>(collection, queryByNameAndCount)
-        console.log(likes.docs.length)
         temp[id] = likes.docs.length
         setCountLike(temp)
       } catch(e) {
@@ -74,7 +68,6 @@ export default function HomePage() {
       }
     }
     const queryStr = "/content and /signature and /tags/[** in [\"" + params.slug + "\"]] | limit 10";
-    console.log(queryStr)
     const resultSet = (await queryDoc<Post>(collection, queryStr)).docs.map(
       (element) => {
         addLike(element.id)
@@ -93,8 +86,6 @@ export default function HomePage() {
 
   async function like(id:string) {
     try {
-      console.log("clicked")
-      console.log(id)
       const accounts: any = await ethereum?.request({
         method: "eth_requestAccounts",
       });
@@ -108,7 +99,7 @@ export default function HomePage() {
         ],
       });
 
-      const x = await addDoc(collection, {
+      await addDoc(collection, {
         like: id
       })
       getData()
@@ -126,18 +117,19 @@ export default function HomePage() {
 
   useEffect(() => {
     const temp: any = {}
+
     async function addLike(col:any, id: string) {
       try {
         // didn't get count works atm
         const queryByNameAndCount = '/["like" = "' + id + '"] | limit 100'
         const likes = await queryDoc<Like>(col, queryByNameAndCount)
-        console.log(likes.docs.length)
         temp[id] = likes.docs.length
         setCountLike(temp)
       } catch(e) {
         console.log(e)
       }
     }
+
     async function get_() {
       // get collection
       await syncAccountNonce(client);
@@ -162,10 +154,12 @@ export default function HomePage() {
             ),
           };
         }
-      );
+      )
       setPosts(resultSet)
     }
-    get_();
+
+    get_()
+
     if (typeof window !== "undefined") {
       setEthereum(window.ethereum);
     }

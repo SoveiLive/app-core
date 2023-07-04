@@ -7,19 +7,12 @@ import {
   createRandomAccount,
   addDoc,
   syncAccountNonce,
-  Index,
   getCollection,
-  deleteDoc,
-  getDatabase,
-  IndexType,
-  createCollection,
-  createFromPrivateKey,
   queryDoc,
 } from "db3.js";
 import { recoverPersonalSignature } from "@metamask/eth-sig-util";
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import ReactMarkdown from "react-markdown";
-import ReactDom from "react-dom";
 import Link from 'next/link'
 import Connect from "./components/Connect";
 
@@ -51,7 +44,6 @@ declare global {
 }
 
 export default function HomePage() {
-  const [database, setDatabase] = useState<any>();
   const [collection, setCollection] = useState<any>();
   const [posts, setPosts] = useState<any[]>([]);
   const [ethereum, setEthereum] = useState<any>();
@@ -128,13 +120,10 @@ export default function HomePage() {
 
   async function like(id:string) {
     try {
-      console.log("clicked")
-      console.log(id)
       const accounts: any = await ethereum?.request({
         method: "eth_requestAccounts",
       });
       const account: any = accounts ? accounts[0] : undefined;
-
       const signature = await ethereum?.request({
         method: "personal_sign",
         params: [
@@ -142,8 +131,7 @@ export default function HomePage() {
           account
         ],
       });
-
-      const x = await addDoc(collection, {
+      await addDoc(collection, {
         like: id
       })
       getData()
