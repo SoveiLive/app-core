@@ -41,6 +41,10 @@ interface Post {
   signaturee: string;
 }
 
+interface Like {
+  id: string;
+}
+
 declare global {
   interface Window {
     ethereum?: MetaMaskInpageProvider;
@@ -52,12 +56,29 @@ export default function HomePage() {
   const [collection, setCollection] = useState<any>();
   const [posts, setPosts] = useState<any[]>([]);
   const [ethereum, setEthereum] = useState<any>();
+  const [countLike, setCountLike] = useState<any>({});
   const params = useParams()
 
  async function getData() {
-    const queryStr = "/content and /signature and /[tag = " + params.slug + "] | limit 10";
+    const temp: any = {}
+    async function addLike(id: string) {
+      try {
+        // didn't get count works atm
+        const queryByNameAndCount = '/["like" = "' + id + '"] | limit 100'
+        const likes = await queryDoc<Like>(collection, queryByNameAndCount)
+        console.log(likes.docs.length)
+        temp[id] = likes.docs.length
+        setCountLike(temp)
+        console.log(countLike)
+      } catch(e) {
+        console.log(e)
+      }
+    }
+    const queryStr = "/content and /signature and /tags/[** in [\"" + params.slug + "\"]] | limit 10";
+    console.log(queryStr)
     const resultSet = (await queryDoc<Post>(collection, queryStr)).docs.map(
       (element) => {
+        addLike(element.id)
         return {
           id: element.id,
           content: (element.doc as any).content,
@@ -71,6 +92,32 @@ export default function HomePage() {
     setPosts(resultSet);
   }
 
+  async function like(id:string) {
+    try {
+      console.log("clicked")
+      console.log(id)
+      const accounts: any = await ethereum?.request({
+        method: "eth_requestAccounts",
+      });
+      const account: any = accounts ? accounts[0] : undefined;
+
+      const signature = await ethereum?.request({
+        method: "personal_sign",
+        params: [
+          "liked " + id,
+          account
+        ],
+      });
+
+      const x = await addDoc(collection, {
+        like: id
+      })
+      getData()
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   function getAuthor(message: string, signature: string) {
     return recoverPersonalSignature({
       data: message,
@@ -79,6 +126,20 @@ export default function HomePage() {
   }
 
   useEffect(() => {
+    const temp: any = {}
+    async function addLike(col:any, id: string) {
+      try {
+        // didn't get count works atm
+        const queryByNameAndCount = '/["like" = "' + id + '"] | limit 100'
+        const likes = await queryDoc<Like>(col, queryByNameAndCount)
+        console.log(likes.docs.length)
+        temp[id] = likes.docs.length
+        setCountLike(temp)
+        console.log(countLike)
+      } catch(e) {
+        console.log(e)
+      }
+    }
     async function get_() {
       // get collection
       await syncAccountNonce(client);
@@ -90,9 +151,10 @@ export default function HomePage() {
       setCollection(col);
 
       // get posts
-      const queryStr = "/content and /signature and /[tag = " + params.slug + "] | limit 10";
+      const queryStr = "/content and /signature and /tags/[** in [\"" + params.slug + "\"]] | limit 10";
       const resultSet = (await queryDoc<Post>(col, queryStr)).docs.map(
         (element) => {
+          addLike(col, element.id)
           return {
             id: element.id,
             content: (element.doc as any).content,
@@ -103,8 +165,8 @@ export default function HomePage() {
           };
         }
       );
-      setPosts(resultSet);
-      console.log(resultSet);
+      setPosts(resultSet)
+      console.log(resultSet)
     }
     get_();
     if (typeof window !== "undefined") {
@@ -143,8 +205,16 @@ export default function HomePage() {
                   <article className="prose prose-slate">
                     <ReactMarkdown>{item.content}</ReactMarkdown>
                   </article>
-                  <div className="pt-2">
-                    <p className="text-sm font-extralight underline"><Link href={"/u/"+item.author}>{item.author.substring(0, 5) + "..." + item.author.substring(item.author.length - 3, item.author.length)}</Link></p>
+                  <div className="pt-2 w-full flex items-center">
+                    <p className="flex-none text-sm font-extralight underline"><Link href={"/u/"+item.author}>{item.author.substring(0, 5) + "..." + item.author.substring(item.author.length - 3, item.author.length)}</Link></p>
+                    <div className="grow"></div>
+                    <span id={item.id} onClick={() => like(item.id)} className="hover:cursor-pointer flex-none flex h-min w-min space-x-1 items-center rounded-full text-rose-600 bg-rose-50 py-1 px-2 text-xs font-medium">
+                      <p>{countLike[item.id]}</p>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                      </svg>
+                      <p className="float-right"></p>
+                    </span>
                   </div>
                 </div>
               </div>

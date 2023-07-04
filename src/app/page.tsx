@@ -40,6 +40,10 @@ interface Post {
   signaturee: string;
 }
 
+interface Like {
+  id: string;
+}
+
 declare global {
   interface Window {
     ethereum?: MetaMaskInpageProvider;
@@ -51,12 +55,16 @@ export default function HomePage() {
   const [collection, setCollection] = useState<any>();
   const [posts, setPosts] = useState<any[]>([]);
   const [ethereum, setEthereum] = useState<any>();
+  const [countLike, setCountLike] = useState<any>({});
 
   async function add() {
     try {
       const message = (document!.querySelector(
         "#messageform"
       ) as HTMLInputElement)!.value;
+      const tags = (document!.querySelector(
+        "#tags"
+      ) as HTMLInputElement)!.value.split(' ');
 
       const accounts: any = await ethereum?.request({
         method: "eth_requestAccounts",
@@ -71,8 +79,9 @@ export default function HomePage() {
       const x = await addDoc(collection, {
         content: message,
         signature: signature,
-      });
-      getData();
+        tags: tags
+      })
+      getData()
     } catch (e) {
       console.log(e);
     }
@@ -99,10 +108,25 @@ export default function HomePage() {
     }
   }
 
-  async function getData() {
+ async function getData() {
+    const temp: any = {}
+    async function addLike(id: string) {
+      try {
+        // didn't get count works atm
+        const queryByNameAndCount = '/["like" = "' + id + '"] | limit 100'
+        const likes = await queryDoc<Like>(collection, queryByNameAndCount)
+        console.log(likes.docs.length)
+        temp[id] = likes.docs.length
+        setCountLike(temp)
+        console.log(countLike)
+      } catch(e) {
+        console.log(e)
+      }
+    }
     const queryStr = "/content and /signature | limit 10";
     const resultSet = (await queryDoc<Post>(collection, queryStr)).docs.map(
       (element) => {
+        addLike(element.id)
         return {
           id: element.id,
           content: (element.doc as any).content,
@@ -123,7 +147,47 @@ export default function HomePage() {
     });
   }
 
+  async function like(id:string) {
+    try {
+      console.log("clicked")
+      console.log(id)
+      const accounts: any = await ethereum?.request({
+        method: "eth_requestAccounts",
+      });
+      const account: any = accounts ? accounts[0] : undefined;
+
+      const signature = await ethereum?.request({
+        method: "personal_sign",
+        params: [
+          "liked " + id,
+          account
+        ],
+      });
+
+      const x = await addDoc(collection, {
+        like: id
+      })
+      getData()
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   useEffect(() => {
+    const temp: any = {}
+    async function addLike(col:any, id: string) {
+      try {
+        // didn't get count works atm
+        const queryByNameAndCount = '/["like" = "' + id + '"] | limit 100'
+        const likes = await queryDoc<Like>(col, queryByNameAndCount)
+        console.log(likes.docs.length)
+        temp[id] = likes.docs.length
+        setCountLike(temp)
+        console.log(countLike)
+      } catch(e) {
+        console.log(e)
+      }
+    }
     async function get_() {
       // get collection
       await syncAccountNonce(client);
@@ -138,6 +202,7 @@ export default function HomePage() {
       const queryStr = "/content and /signature | limit 10";
       const resultSet = (await queryDoc<Post>(col, queryStr)).docs.map(
         (element) => {
+          addLike(col, element.id)
           return {
             id: element.id,
             content: (element.doc as any).content,
@@ -187,10 +252,15 @@ export default function HomePage() {
               id="messageform"
               className="p-2 bg-gray-100 w-full rounded-[10px] h-16 resize-none mt-2"
             ></textarea>
-            <div className="mt-2 flex flex-row-reverse">
+            <div className="mt-2 w-full">
+              <input
+                type="text" id="tags"
+                className="bg-gray-100 p-2 rounded-[10px]"
+                placeholder="tag1 tag2 etc."
+              />
               <button
                 onClick={() => add()}
-                className="bg-[#EAB308] px-4 py-2 text-xs rounded-md rounded-2xl text-white"
+                className="float-right bg-[#EAB308] px-4 py-2 text-xs rounded-md rounded-2xl text-white"
               >
                 Send
               </button>
@@ -207,8 +277,16 @@ export default function HomePage() {
                   <article className="prose prose-slate">
                     <ReactMarkdown>{item.content}</ReactMarkdown>
                   </article>
-                  <div className="pt-2">
-                    <p className="text-sm font-extralight underline"><Link href={"/u/"+item.author}>{item.author.substring(0, 5) + "..." + item.author.substring(item.author.length - 3, item.author.length)}</Link></p>
+                  <div className="pt-2 w-full flex items-center">
+                    <p className="flex-none text-sm font-extralight underline"><Link href={"/u/"+item.author}>{item.author.substring(0, 5) + "..." + item.author.substring(item.author.length - 3, item.author.length)}</Link></p>
+                    <div className="grow"></div>
+                    <span id={item.id} onClick={() => like(item.id)} className="hover:cursor-pointer flex-none flex h-min w-min space-x-1 items-center rounded-full text-rose-600 bg-rose-50 py-1 px-2 text-xs font-medium">
+                      <p>{countLike[item.id]}</p>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                      </svg>
+                      <p className="float-right"></p>
+                    </span>
                   </div>
                 </div>
               </div>
