@@ -16,20 +16,20 @@ import {
   createFromPrivateKey,
   queryDoc,
 } from "db3.js";
-
 import { recoverPersonalSignature } from "@metamask/eth-sig-util";
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import ReactMarkdown from "react-markdown";
 import ReactDom from "react-dom";
 import Link from 'next/link'
 
+
 const account = createRandomAccount();
 
 const client = createClient(
   "https://rollup.cloud.db3.network",
   "https://index.cloud.db3.network",
-  //  "http://127.0.0.1:26619",
-  //  "http://127.0.0.1:26639",
+  //"http://127.0.0.1:26619",
+  //"http://127.0.0.1:26639",
   account
 );
 
@@ -49,6 +49,10 @@ declare global {
     ethereum?: MetaMaskInpageProvider;
   }
 }
+
+// get DATABASE variable
+const {publicRuntimeConfig} = require('../../next.config.js')
+const {DATABASE} = publicRuntimeConfig
 
 export default function HomePage() {
   const [database, setDatabase] = useState<any>();
@@ -87,27 +91,6 @@ export default function HomePage() {
     }
   }
 
-  async function create() {
-    const index1: Index = {
-      path: "/city",
-      indexType: IndexType.StringKey,
-    };
-    const { collection, result } = await createCollection(
-      database,
-      "test_collection3",
-      [index1]
-    );
-  }
-
-  async function delete_() {
-    try {
-      const x = await deleteDoc(collection, ["6"]);
-      console.log(x);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
  async function getData() {
     const temp: any = {}
     async function addLike(id: string) {
@@ -118,12 +101,12 @@ export default function HomePage() {
         console.log(likes.docs.length)
         temp[id] = likes.docs.length
         setCountLike(temp)
-        console.log(countLike)
       } catch(e) {
         console.log(e)
       }
     }
     const queryStr = "/content and /signature | limit 10";
+    console.log(queryStr)
     const resultSet = (await queryDoc<Post>(collection, queryStr)).docs.map(
       (element) => {
         addLike(element.id)
@@ -183,7 +166,6 @@ export default function HomePage() {
         console.log(likes.docs.length)
         temp[id] = likes.docs.length
         setCountLike(temp)
-        console.log(countLike)
       } catch(e) {
         console.log(e)
       }
@@ -191,8 +173,9 @@ export default function HomePage() {
     async function get_() {
       // get collection
       await syncAccountNonce(client);
+      console.log(DATABASE)
       const col = await getCollection(
-        "0x38801fd445898d1851dcf8ed5504840a98434800",
+        DATABASE,
         "o",
         client
       );
@@ -214,7 +197,6 @@ export default function HomePage() {
         }
       );
       setPosts(resultSet);
-      console.log(resultSet);
     }
     get_();
     if (typeof window !== "undefined") {

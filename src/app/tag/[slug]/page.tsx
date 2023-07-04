@@ -17,22 +17,21 @@ import {
   createFromPrivateKey,
   queryDoc,
 } from "db3.js";
-
 import { recoverPersonalSignature } from "@metamask/eth-sig-util";
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import ReactMarkdown from "react-markdown";
 import ReactDom from "react-dom";
 import Link from 'next/link'
 
-const account = createRandomAccount();
+const account = createRandomAccount()
 
 const client = createClient(
   "https://rollup.cloud.db3.network",
   "https://index.cloud.db3.network",
-  //  "http://127.0.0.1:26619",
-  //  "http://127.0.0.1:26639",
+  //"http://127.0.0.1:26619",
+  //"http://127.0.0.1:26639",
   account
-);
+)
 
 import Connect from "../../components/Connect";
 
@@ -50,6 +49,10 @@ declare global {
     ethereum?: MetaMaskInpageProvider;
   }
 }
+
+// get DATABASE variable
+const {publicRuntimeConfig} = require('../../../../next.config.js')
+const {DATABASE} = publicRuntimeConfig
 
 export default function HomePage() {
   const [database, setDatabase] = useState<any>();
@@ -69,7 +72,6 @@ export default function HomePage() {
         console.log(likes.docs.length)
         temp[id] = likes.docs.length
         setCountLike(temp)
-        console.log(countLike)
       } catch(e) {
         console.log(e)
       }
@@ -135,7 +137,6 @@ export default function HomePage() {
         console.log(likes.docs.length)
         temp[id] = likes.docs.length
         setCountLike(temp)
-        console.log(countLike)
       } catch(e) {
         console.log(e)
       }
@@ -144,7 +145,7 @@ export default function HomePage() {
       // get collection
       await syncAccountNonce(client);
       const col = await getCollection(
-        "0x38801fd445898d1851dcf8ed5504840a98434800",
+        DATABASE,
         "o",
         client
       );
@@ -166,7 +167,6 @@ export default function HomePage() {
         }
       );
       setPosts(resultSet)
-      console.log(resultSet)
     }
     get_();
     if (typeof window !== "undefined") {
