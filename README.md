@@ -8,7 +8,10 @@
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 </div>
 
-SoveiLive is a social network where users have data ownership. This repository is dedicated to the core app. If you're looking for the presentation site, please take a look at the [landing page repo](https://github.com/SoveiLive/landing-page).
+
+**IMPORTANT MESSAGE** — The project was made for the ETHShangai2023 hackathon and I won the prize "building a decentralized application with DB3". For the moment, the project is on hold.
+
+> SoveiLive is a social network where users have data ownership. This repository is dedicated to the core app. If you're looking for the presentation site, please take a look at the [landing page repo](https://github.com/SoveiLive/landing-page).
 
 ## Installation
 For development purposes:
